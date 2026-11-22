@@ -139,7 +139,7 @@ static void spawn(void *(*fn)(void *), int count, const char *role) {
 
 /* main
     1. checks there are exactly 3 arguments in the order the spec sets
-    2. parses sleep time, producer count and consumer count
+    2. parses the three values and rejects anything zero or negative
     3. buffer_init() creates the mutex and the two semaphores
     4. srand seeds rand with the current time so runs differ
     5. spawns the producers, then the consumers
@@ -150,6 +150,7 @@ int main(int argc, char *argv[]) {
     int sleep_time = atoi(argv[1]);
     int num_producers = atoi(argv[2]);
     int num_consumers = atoi(argv[3]);
+    if (sleep_time <= 0 || num_producers <= 0 || num_consumers <= 0) usage(argv[0]);
 
     buffer_init();
     srand((unsigned)time(NULL));
